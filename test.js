@@ -5,7 +5,7 @@ chai.use(chaiAsPromised).should();
 import GoveeClient from './index.js';
 
 const api = new GoveeClient({
-  api_key: "9bc5341a-076d-4c0c-89f8-5703968b1669"
+  api_key: process.env.API_KEY 
 });
 
 describe("ping", () => {
