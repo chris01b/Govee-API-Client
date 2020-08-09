@@ -1,7 +1,7 @@
-import fetch from 'isomorphic-unfetch';
-import querystring from 'querystring';
+const fetch = require('isomorphic-unfetch');
+const querystring = require('querystring');
 
-export default class GoveeClient {
+class GoveeClient {
   constructor(config) {
     this.api_key = config.api_key;
     this.basePath = "https://developer-api.govee.com";
@@ -20,16 +20,15 @@ export default class GoveeClient {
         headers
     };
 
-    return fetch(url, config).then(r => {
-      if (r.ok) {
+    return fetch(url, config).then(res => {
+      if (res.ok) {
         if (endpoint != "/ping") {
-          return r.json();
+          return res.json();
         } else {
-          return r.text();
+          return res.text();
         }
       }
-      console.log(r.status);
-      throw new Error(r);
+      throw new Error(res);
     })
   }
 
@@ -64,4 +63,26 @@ export default class GoveeClient {
     };
     return this.request(url, config);
   }
+
+  turn(mode, model, device) {
+    return new Promise((resolve, reject) => {
+      if ((mode !== 'on' || mode === 'off') && (mode === 'on' || mode !== 'off')) {
+        reject(new Error("Incorrect turn parameter"));
+      } else {
+        let params = {
+          'device': device,
+          'model': model,
+          'cmd' : {
+            'name': 'turn',
+            'value': mode
+          }
+        };
+        this.deviceControl(params).then(res => {
+          resolve(res);
+        }).catch(e => {reject(e)});
+      }
+    });
+  }
 }
+
+exports.GoveeClient = GoveeClient;

@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "name": "govee-api-client",
   "version": "1.0.0",
   "description": "An unofficial NodeJS client for the official Govee API",

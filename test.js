@@ -1,10 +1,10 @@
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
+const chai = require('chai');
+const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised).should();
 
-import GoveeClient from './index.js';
+const g = require('./index.js');
 
-const api = new GoveeClient({
+const api = new g.GoveeClient({
   api_key: process.env.API_KEY 
 });
 
@@ -16,13 +16,13 @@ describe("ping", () => {
 
 describe("deviceList", () => {
   it("receives 200 code", () => {
-    return api.deviceList().then(data => {
-      return data.code.should.equal(200);
+    return api.deviceList().then(res => {
+      return res.code.should.equal(200);
     });
   });
   it("processes successfully", () => {
-    return api.deviceList().then(data => {
-      return data.message.should.equal("Success");
+    return api.deviceList().then(res => {
+      return res.message.should.equal("Success");
     });
   });
 });
